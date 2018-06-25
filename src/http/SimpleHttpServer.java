@@ -22,7 +22,9 @@ public class SimpleHttpServer {
 			String localhost = InetAddress.getLocalHost().getHostAddress();//서버소켓을 만듬
 			serverSocket.bind( new InetSocketAddress( localhost, PORT ) ); //인터넷 소켓어드레스를 바인딩 
 			consoleLog("bind " + localhost + ":" + PORT);
-
+			
+			
+			
 			while (true) {
 				// 3. Wait for connecting ( accept ), accept로 받으면 누가 요청할때까지 잠수 blocking
 				Socket socket = serverSocket.accept();
@@ -45,7 +47,9 @@ public class SimpleHttpServer {
 		}
 	}
 
-	public static void consoleLog(String message) {
+	public static void consoleLog(String message) { //브라우저 요청에 대한 콘솔출력을 하는 메소드
 		System.out.println("[HttpServer#" + Thread.currentThread().getId()  + "] " + message);
+		
+		
 	}
 }

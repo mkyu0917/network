@@ -28,11 +28,17 @@ public class RequestHandler extends Thread {
 
 			// get IOStream
 			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+			//소켓의 바이트 데이터를 문자열 데이터로 그리고 라인단위로 받음
 			OutputStream os = socket.getOutputStream();
+			//while문을 통해서 요청정보를 모두 출력한다.
 			
 			String request= null;
+			
+			
 			while(true) {
 				String line = br.readLine();
+//				String[] tokens = line.split( " " );
+				//System.out.println(tokens[0]+'b'+tokens[1]+'a'+tokens[2]);
 				if (line == null ||"".equals(line)) {
 					break;
 				}
@@ -43,6 +49,8 @@ public class RequestHandler extends Thread {
 				
 			}
 			consoleLog(request);
+			
+					
 			// 예제 응답입니다.
 			// 서버 시작과 테스트를 마친 후, 주석 처리 합니다.
 			os.write( "HTTP/1.1 200 OK\r\n".getBytes( "UTF-8" ) );
@@ -64,7 +72,14 @@ public class RequestHandler extends Thread {
 		}
 	}
 
+	
 	private void consoleLog(String message) {
+		
 		System.out.println("[RequestHandler#" + getId() + "] " + message);
+		
+		
 	}
-}
+	
+	
+
+	}

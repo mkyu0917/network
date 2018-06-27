@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class RequestHandler extends Thread {
 	private static final String DOCUMENT_ROOT = "./webapp";
@@ -37,8 +38,11 @@ public class RequestHandler extends Thread {
 			
 			while(true) {
 				String line = br.readLine();
-//				String[] tokens = line.split( " " );
-				//System.out.println(tokens[0]+'b'+tokens[1]+'a'+tokens[2]);
+				String[] tokens = line.split(" ");
+				String url = tokens[1];
+				String protocol = tokens[2];
+				responseStaticResource(os,url,protocol);
+				
 				if (line == null ||"".equals(line)) {
 					break;
 				}
@@ -50,13 +54,13 @@ public class RequestHandler extends Thread {
 			}
 			consoleLog(request);
 			
-					
+								
 			// 예제 응답입니다.
 			// 서버 시작과 테스트를 마친 후, 주석 처리 합니다.
-			os.write( "HTTP/1.1 200 OK\r\n".getBytes( "UTF-8" ) );
-			os.write( "Content-Type:text/html; charset=utf-8\r\n".getBytes( "UTF-8" ) );
-			os.write( "\r\n".getBytes() );
-			os.write( "<h1>이 페이지가 잘 보이면 실습과제 SimpleHttpServer를 시작할 준비가 된 것입니다.</h1>".getBytes( "UTF-8" ) );
+//			os.write( "HTTP/1.1 200 OK\r\n".getBytes( "UTF-8" ) );
+//			os.write( "Content-Type:text/html; charset=utf-8\r\n".getBytes( "UTF-8" ) );
+//			os.write( "\r\n".getBytes() );
+//			os.write( "<h1>이 페이지가 잘 보이면 실습과제 SimpleHttpServer를 시작할 준비가 된 것입니다.</h1>".getBytes( "UTF-8" ) );
 
 		} catch ( Exception ex ) {
 			consoleLog( "error:" + ex );
@@ -79,6 +83,20 @@ public class RequestHandler extends Thread {
 		
 		
 	}
+	private void responseStaticResource(OutputStream outputStream, String url, String protocol )
+				throws IOException {
+
+		File file = new File( "./webapp" + url );
+		Path path = file.toPath();
+		byte[] body = Files.readAllBytes( path );
+		
+		outputStream.write( "HTTP/1.1 200 OK\r\n".getBytes( "UTF-8" ));
+		outputStream.write( "Content-Type:text/html\r\n".getBytes( "UTF-8" ) );
+		outputStream.write( "\r\n".getBytes() );
+		outputStream.write( body );
+  
+			  }  
+
 	
 	
 
